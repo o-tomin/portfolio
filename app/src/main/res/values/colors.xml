@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Base colors -->
+    <color name="colorPrimary">#1E88E5</color> <!-- Blue accent color -->
+    <color name="colorPrimaryDark">#1565C0</color>
+    <color name="colorAccent">#FF4081</color> <!-- Accent color for highlights -->
+
+    <!-- Neutral base colors -->
+    <color name="backgroundColor">#FFFFFF</color> <!-- White background for light theme -->
+    <color name="textColorPrimary">#212121</color> <!-- Dark text color for readability -->
+    <color name="textColorSecondary">#757575</color> <!-- Secondary text color -->
+    <color name="dividerColor">#E0E0E0</color> <!-- Light gray divider for sections -->
+
+    <!-- Dark mode colors -->
+    <color name="backgroundColorDark">#121212</color>
+    <color name="textColorPrimaryDark">#FFFFFF</color>
+    <color name="textColorSecondaryDark">#B0B0B0</color>
 </resources>

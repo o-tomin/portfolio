@@ -1,9 +1,43 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.PortfolioLayouts" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary branding colors -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- Background colors -->
+        <item name="android:windowBackground">@color/backgroundColor</item>
+        <item name="colorOnPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+
+        <!-- Toolbar settings -->
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
+
+        <!-- Font styles -->
+        <item name="fontFamily">@font/roboto_regular</item> <!-- Ensure you have Roboto font in your project -->
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+
+        <!-- Button styles -->
+        <item name="buttonStyle">@style/ButtonStyle</item>
+
+        <!-- Divider -->
+        <item name="dividerColor">@color/dividerColor</item>
     </style>
 
-    <style name="Theme.PortfolioLayouts" parent="Base.Theme.PortfolioLayouts" />
+    <!-- Custom toolbar style -->
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="titleTextColor">@color/textColorPrimary</item>
+    </style>
+
+    <!-- Custom button style -->
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:textColor">#FFFFFF</item> <!-- White text for contrast -->
+        <item name="android:padding">12dp</item>
+        <item name="cornerRadius">8dp</item> <!-- Rounded corners -->
+    </style>
 </resources>
