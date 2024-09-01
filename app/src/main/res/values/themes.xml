@@ -40,4 +40,10 @@
         <item name="android:padding">12dp</item>
         <item name="cornerRadius">8dp</item> <!-- Rounded corners -->
     </style>
+
+    <style name="Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/backgroundColor</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/animated_logo</item>
+    </style>
 </resources>
