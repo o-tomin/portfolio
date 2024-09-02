@@ -54,4 +54,18 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="SelectedText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textStyle">bold</item> <!-- Optional, adjust as needed -->
+    </style>
+
+    <style name="NotSelectedText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColorSecondary</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textStyle">normal</item> <!-- Optional, adjust as needed -->
+    </style>
 </resources>
