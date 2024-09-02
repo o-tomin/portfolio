@@ -126,8 +126,4 @@ class MainActivity : BaseActivity() {
         BottomMenuItem.EXPERIENCE -> experienceFragment
         BottomMenuItem.EDUCATION -> educationFragment
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
 }
