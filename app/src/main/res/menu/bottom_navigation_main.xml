@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="bottom_navigation">
+
+    <item
+        android:id="@+id/bottom_nav_profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_account_circle"
+        android:title="@string/profile"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/bottom_nav_experience"
+        android:enabled="true"
+        android:icon="@drawable/ic_work"
+        android:title="@string/experience"
+        android:visible="true" />
+
+
+    <item
+        android:id="@+id/bottom_nav_education"
+        android:enabled="true"
+        android:icon="@drawable/school"
+        android:title="@string/education"
+        android:visible="true" />
+
+</menu>

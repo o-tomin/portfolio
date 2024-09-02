@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary branding colors -->
@@ -16,7 +16,8 @@
         <item name="toolbarStyle">@style/ToolbarStyle</item>
 
         <!-- Font styles -->
-        <item name="fontFamily">@font/roboto_regular</item> <!-- Ensure you have Roboto font in your project -->
+        <item name="fontFamily">@font/roboto_regular
+        </item> <!-- Ensure you have Roboto font in your project -->
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/textColorPrimary</item>
 
@@ -45,5 +46,12 @@
         <item name="windowSplashScreenBackground">@color/backgroundColor</item>
         <item name="postSplashScreenTheme">@style/AppTheme</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/animated_logo</item>
+    </style>
+
+    <style name="AppBottomNavigationView">
+        <item name="colorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>
