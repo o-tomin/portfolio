@@ -2,6 +2,7 @@ package com.oleksii.tomin.portfoliolayouts.main
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import androidx.activity.OnBackPressedCallback
@@ -55,34 +56,39 @@ class MainActivity : BaseActivity() {
     }
 
     private fun installAppSplashScreen() = installSplashScreen().apply {
+
         setKeepOnScreenCondition {
             if (this@MainActivity::viewModel.isInitialized)
                 !viewModel.currentState.isReady
             else false
         }
         setOnExitAnimationListener { screen ->
-            val zoomX = ObjectAnimator.ofFloat(
-                screen.iconView,
-                View.SCALE_X,
-                0.4f,
-                0.0f
-            )
-            zoomX.interpolator = OvershootInterpolator()
-            zoomX.duration = 500L
-            zoomX.doOnEnd { screen.remove() }
+            try {
+                val zoomX = ObjectAnimator.ofFloat(
+                    screen.iconView,
+                    View.SCALE_X,
+                    0.4f,
+                    0.0f
+                )
+                zoomX.interpolator = OvershootInterpolator()
+                zoomX.duration = 500L
+                zoomX.doOnEnd { screen.remove() }
 
-            val zoomY = ObjectAnimator.ofFloat(
-                screen.iconView,
-                View.SCALE_Y,
-                0.4f,
-                0.0f
-            )
-            zoomY.interpolator = OvershootInterpolator()
-            zoomY.duration = 500L
-            zoomY.doOnEnd { screen.remove() }
+                val zoomY = ObjectAnimator.ofFloat(
+                    screen.iconView,
+                    View.SCALE_Y,
+                    0.4f,
+                    0.0f
+                )
+                zoomY.interpolator = OvershootInterpolator()
+                zoomY.duration = 500L
+                zoomY.doOnEnd { screen.remove() }
 
-            zoomX.start()
-            zoomY.start()
+                zoomX.start()
+                zoomY.start()
+            } catch (t: Throwable) {
+                Log.e("Alex", t.message, t)
+            }
         }
     }
 
