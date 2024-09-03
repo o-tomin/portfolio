@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -40,6 +43,9 @@ android {
 
 dependencies {
 
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -60,4 +66,8 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+kapt {
+    correctErrorTypes = true
 }

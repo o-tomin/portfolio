@@ -18,10 +18,12 @@ import com.oleksii.tomin.portfoliolayouts.experience.ExperienceFragment
 import com.oleksii.tomin.portfoliolayouts.ext.scopedSelectAndDebounce
 import com.oleksii.tomin.portfoliolayouts.ext.viewBinding
 import com.oleksii.tomin.portfoliolayouts.profile.ProfileFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
     private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::inflate)
 
