@@ -1,22 +1,51 @@
 [versions]
-agp = "8.5.2"
+# https://mvnrepository.com/artifact/com.android.application/com.android.application.gradle.plugin
+agp = "8.6.0"
+
+# https://mvnrepository.com/artifact/androidx.core/core-splashscreen
 coreSplashscreen = "1.0.1"
+
+# https://mvnrepository.com/artifact/androidx.fragment/fragment-ktx
 fragmentKtx = "1.8.2"
-junitJupiterParams = "5.9.2"
-kotlin = "1.9.0"
+
+# https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+junitJupiterParams = "5.11.0"
+
+# https://mvnrepository.com/artifact/org.jetbrains.kotlin.android/org.jetbrains.kotlin.android.gradle.plugin
+kotlin = "2.0.20"
+
+# https://mvnrepository.com/artifact/androidx.core/core-ktx
 coreKtx = "1.13.1"
-junit = "4.13.2"
+
+# https://mvnrepository.com/artifact/androidx.test.ext/junit
 junitVersion = "1.2.1"
+
+# https://mvnrepository.com/artifact/androidx.test.espresso/espresso-core
 espressoCore = "3.6.1"
+
+# https://mvnrepository.com/artifact/androidx.appcompat/appcompat
 appcompat = "1.7.0"
-kotlinxCoroutinesTest = "1.8.0"
+
+# https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-test
+kotlinxCoroutinesTest = "1.8.1"
+
+# https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-viewmodel-ktx
 lifecycleViewmodelKtx = "2.8.4"
+
+# https://mvnrepository.com/artifact/com.google.android.material/material
 material = "1.12.0"
+
+# https://mvnrepository.com/artifact/androidx.activity/activity-ktx
 activity = "1.9.1"
+
+# https://mvnrepository.com/artifact/androidx.constraintlayout/constraintlayout
 constraintlayout = "2.1.4"
-mockk = "1.13.7"
+
+# https://mvnrepository.com/artifact/io.mockk/mockk
+mockk = "1.13.12"
+
+# https://mvnrepository.com/artifact/androidx.test/rules
 rules = "1.6.1"
-junitKtx = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,7 +53,6 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-rules = { module = "androidx.test:rules", version.ref = "rules" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -35,7 +63,6 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 [plugins]
