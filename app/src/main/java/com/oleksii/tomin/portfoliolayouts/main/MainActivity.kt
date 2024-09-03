@@ -23,8 +23,8 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 
 class MainActivity : BaseActivity() {
-
     private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::inflate)
+
     private lateinit var profileFragment: Fragment
     private lateinit var experienceFragment: Fragment
     private lateinit var educationFragment: Fragment
@@ -56,11 +56,8 @@ class MainActivity : BaseActivity() {
     }
 
     private fun installAppSplashScreen() = installSplashScreen().apply {
-
         setKeepOnScreenCondition {
-            if (this@MainActivity::viewModel.isInitialized)
-                !viewModel.currentState.isReady
-            else false
+            !this@MainActivity::viewModel.isInitialized
         }
         setOnExitAnimationListener { screen ->
             try {
