@@ -8,44 +8,38 @@ import android.view.animation.OvershootInterpolator
 import androidx.activity.OnBackPressedCallback
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.oleksii.tomin.portfoliolayouts.BaseActivity
 import com.oleksii.tomin.portfoliolayouts.databinding.ActivityMainBinding
-import com.oleksii.tomin.portfoliolayouts.education.EducationFragment
-import com.oleksii.tomin.portfoliolayouts.experience.ExperienceFragment
+import com.oleksii.tomin.portfoliolayouts.di.BottomMenuFragmentFactory
 import com.oleksii.tomin.portfoliolayouts.ext.scopedSelectAndDebounce
 import com.oleksii.tomin.portfoliolayouts.ext.viewBinding
-import com.oleksii.tomin.portfoliolayouts.profile.ProfileFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
     private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::inflate)
 
-    private lateinit var profileFragment: Fragment
-    private lateinit var experienceFragment: Fragment
-    private lateinit var educationFragment: Fragment
+    @Inject
+    lateinit var fragmentFactory: BottomMenuFragmentFactory
 
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installAppSplashScreen()
-
         super.onCreate(savedInstanceState)
+        supportFragmentManager.fragmentFactory = fragmentFactory
         setContentView(binding.root)
 
         viewModel = ViewModelProvider.create(
             owner = this,
             factory = MainViewModelFactory
         )[MainViewModel::class]
-        profileFragment = ProfileFragment()
-        experienceFragment = ExperienceFragment()
-        educationFragment = EducationFragment()
 
         binding.setUpBindings()
         viewModel.setUpCollectors()
@@ -118,17 +112,14 @@ class MainActivity : BaseActivity() {
             }
                 .replace(
                     contentMenuContainer.id,
-                    menuItem.mapToFragment(),
+                    supportFragmentManager.fragmentFactory.instantiate(
+                        classLoader,
+                        menuItem.associatedFragmentClassName()
+                    ),
                     menuItem.tag
                 )
                 .addToBackStack(menuItem.tag)
                 .commit()
         }
-    }
-
-    private fun BottomMenuItem.mapToFragment() = when (this) {
-        BottomMenuItem.PROFILE -> profileFragment
-        BottomMenuItem.EXPERIENCE -> experienceFragment
-        BottomMenuItem.EDUCATION -> educationFragment
     }
 }
