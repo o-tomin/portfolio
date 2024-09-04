@@ -2,8 +2,11 @@ package com.oleksii.tomin.portfoliolayouts.main
 
 import com.oleksii.tomin.portfoliolayouts.mvi.MviViewModel
 import com.oleksii.tomin.portfoliolayouts.mvi.MviViewState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel : MviViewModel<MainState, MainEvents>(
+@HiltViewModel
+class MainViewModel @Inject constructor() : MviViewModel<MainState, MainEvents>(
     MainState(
         selectedBottomMenu = BottomMenuItem.PROFILE,
         viewTransitioning = null,
