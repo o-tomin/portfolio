@@ -3,6 +3,7 @@ package com.oleksii.tomin.portfoliolayouts.profile
 import android.Manifest.permission.BLUETOOTH_CONNECT
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,15 @@ class ProfileFragment : MviFragment() {
         with(viewModel) {
             collectStateProperty(ProfileViewModelState::bluetoothState) {
                 binding.btStatus.text = it.name
+            }
+            collectStateProperty(ProfileViewModelState::gattServerStatus) {
+                binding.gattServerStatus.text = it.name
+            }
+
+            collectEvents { event ->
+                when (event) {
+                    is ProfileViewModelEvents.Error -> Log.e("Alex", event.t.message, event.t)
+                }
             }
         }
 

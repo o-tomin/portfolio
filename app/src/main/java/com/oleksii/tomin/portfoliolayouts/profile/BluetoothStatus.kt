@@ -7,4 +7,5 @@ enum class BluetoothStatus {
     NOT_ENABLED,
     PERMISSIONS_NOT_GRANTED,
     OK,
+    ERROR,
 }
