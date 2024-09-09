@@ -39,6 +39,12 @@ class ProfileFragment : MviFragment() {
             collectStateProperty(ProfileViewModelState::gattServerStatus) {
                 binding.gattServerStatus.text = it.name
             }
+            collectStateProperty(ProfileViewModelState::gattClientStatus) {
+                binding.gattClientStatus.text = it.name
+            }
+            collectStateProperty(ProfileViewModelState::receivedData) {
+                binding.gattServerReceivedData.text = it
+            }
 
             collectEvents { event ->
                 when (event) {
