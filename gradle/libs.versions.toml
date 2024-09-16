@@ -11,6 +11,9 @@ fragmentKtx = "1.8.2"
 # https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
 junitJupiterParams = "5.11.0"
 
+# https://mvnrepository.com/artifact/com.contentful.java/java-sdk
+javaSdk = "10.5.18"
+
 # https://mvnrepository.com/artifact/org.jetbrains.kotlin.android/org.jetbrains.kotlin.android.gradle.plugin
 kotlin = "2.0.20"
 
@@ -50,6 +53,10 @@ rules = "1.6.1"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
 hiltAndroid = "2.52"
 
+# https://mvnrepository.com/artifact/io.coil-kt/coil
+coil = "2.7.0"
+
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
@@ -59,8 +66,10 @@ androidx-rules = { module = "androidx.test:rules", version.ref = "rules" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+java-sdk = { module = "com.contentful.java:java-sdk", version.ref = "javaSdk" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJupiterParams" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junitJupiterParams" }
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junitJupiterParams" }
