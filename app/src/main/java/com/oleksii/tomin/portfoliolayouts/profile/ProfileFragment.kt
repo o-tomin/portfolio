@@ -24,8 +24,33 @@ class ProfileFragment : MviFragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         with(viewModel) {
-            collectStateProperty(ProfileViewModelState::profilePhotoUrl) {
-                binding.profilePhoto.load(it)
+            collectStateProperty(ProfileViewModelState::profilePhotoUrl) { url ->
+                url?.let {
+                    binding.profilePhotoLayout.profilePhoto.load(url) {
+                        crossfade(true)
+                        listener(
+                            onSuccess = { _, _ ->
+                                viewModel.stopProfilePhotoShimmerEffect()
+                            },
+                            onError = { _, _ ->
+                                viewModel.stopProfilePhotoShimmerEffect()
+                            }
+                        )
+                    }
+                }
+            }
+            collectStateProperty(ProfileViewModelState::showProfilePhotoShimmerEffect) { showShimmer ->
+                binding.profilePhotoLayout.shimmerProfilePhoto.apply {
+                    if (showShimmer) {
+                        binding.profilePhotoLayout.flProfilePhoto.visibility = View.GONE
+                        binding.profilePhotoLayout.shimmerProfilePhoto.visibility = View.VISIBLE
+                        startShimmer()
+                    } else {
+                        binding.profilePhotoLayout.flProfilePhoto.visibility = View.VISIBLE
+                        binding.profilePhotoLayout.shimmerProfilePhoto.visibility = View.GONE
+                        stopShimmer()
+                    }
+                }
             }
         }
 

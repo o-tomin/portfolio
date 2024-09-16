@@ -56,6 +56,9 @@ hiltAndroid = "2.52"
 # https://mvnrepository.com/artifact/io.coil-kt/coil
 coil = "2.7.0"
 
+# https://mvnrepository.com/artifact/com.facebook.shimmer/shimmer/0.5.0
+shimmer = "0.5.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -78,6 +81,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
