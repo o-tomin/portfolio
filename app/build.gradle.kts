@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.java.sdk)
     implementation(libs.coil)
     implementation(libs.shimmer)
+    implementation(libs.androidx.cardview)
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(libs.mockk)

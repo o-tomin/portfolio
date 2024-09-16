@@ -42,11 +42,11 @@ class ProfileFragment : MviFragment() {
             collectStateProperty(ProfileViewModelState::showProfilePhotoShimmerEffect) { showShimmer ->
                 binding.profilePhotoLayout.shimmerProfilePhoto.apply {
                     if (showShimmer) {
-                        binding.profilePhotoLayout.flProfilePhoto.visibility = View.GONE
+                        binding.profilePhotoLayout.cvProfilePhoto.visibility = View.GONE
                         binding.profilePhotoLayout.shimmerProfilePhoto.visibility = View.VISIBLE
                         startShimmer()
                     } else {
-                        binding.profilePhotoLayout.flProfilePhoto.visibility = View.VISIBLE
+                        binding.profilePhotoLayout.cvProfilePhoto.visibility = View.VISIBLE
                         binding.profilePhotoLayout.shimmerProfilePhoto.visibility = View.GONE
                         stopShimmer()
                     }
