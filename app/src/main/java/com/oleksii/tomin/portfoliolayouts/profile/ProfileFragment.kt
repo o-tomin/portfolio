@@ -52,6 +52,38 @@ class ProfileFragment : MviFragment() {
                     }
                 }
             }
+            collectStateProperty(ProfileViewModelState::contact) { contact ->
+                contact?.let {
+                    with(binding.profileContactsLayout) {
+                        name.text = contact.name
+                        title.text = contact.title
+
+                        if (contact.location.isNotEmpty()) {
+                            location.text = contact.location
+                            location.visibility = View.VISIBLE
+                        } else {
+                            location.visibility = View.GONE
+                        }
+
+                        email.text = contact.email
+                        linkedin.text = contact.linkedin
+                        phone.text = contact.phone
+                    }
+                }?.also {
+                    viewModel.stopContactsShimmerEffect()
+                }
+            }
+            collectStateProperty(ProfileViewModelState::showContactsShimmerEffect) { showShimmer ->
+                if (showShimmer) {
+                    binding.profileContactsLayout.root.visibility = View.GONE
+                    binding.profileContactsShifferLayout.root.visibility = View.VISIBLE
+                    binding.profileContactsShifferLayout.root.startShimmer()
+                } else {
+                    binding.profileContactsLayout.root.visibility = View.VISIBLE
+                    binding.profileContactsShifferLayout.root.visibility = View.GONE
+                    binding.profileContactsShifferLayout.root.stopShimmer()
+                }
+            }
         }
 
         return binding.root

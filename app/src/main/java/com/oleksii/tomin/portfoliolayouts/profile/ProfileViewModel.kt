@@ -1,5 +1,6 @@
 package com.oleksii.tomin.portfoliolayouts.profile
 
+import Contact
 import androidx.lifecycle.viewModelScope
 import com.oleksii.tomin.portfoliolayouts.contentful.ContentfulService
 import com.oleksii.tomin.portfoliolayouts.mvi.MviViewModel
@@ -16,6 +17,8 @@ class ProfileViewModel @Inject constructor(
     ProfileViewModelState(
         profilePhotoUrl = null,
         showProfilePhotoShimmerEffect = true,
+        contact = null,
+        showContactsShimmerEffect = true,
     )
 ) {
     init {
@@ -25,9 +28,23 @@ class ProfileViewModel @Inject constructor(
             }.onSuccess { url ->
 
                 // The delay is used to demonstrate shimmer effect
-                delay(5_000)
+                delay(4_500)
 
                 updateState { copy(profilePhotoUrl = "https:$url") }
+            }.onFailure {
+                sendEvent(ProfileViewModelEvents.Error(it))
+            }
+        }
+
+        viewModelScope.launch {
+            runCatching {
+                contentfulService.getContentfulResume()
+            }.onSuccess { resume ->
+
+                // The delay is used to demonstrate shimmer effect
+                delay(5_000)
+
+                updateState { copy(contact = resume.contact) }
             }.onFailure {
                 sendEvent(ProfileViewModelEvents.Error(it))
             }
@@ -38,11 +55,16 @@ class ProfileViewModel @Inject constructor(
         copy(showProfilePhotoShimmerEffect = false)
     }
 
+    fun stopContactsShimmerEffect() = updateState {
+        copy(showContactsShimmerEffect = false)
+    }
 }
 
 data class ProfileViewModelState(
     val profilePhotoUrl: String?,
     val showProfilePhotoShimmerEffect: Boolean,
+    val contact: Contact?,
+    val showContactsShimmerEffect: Boolean,
 ) : MviViewState
 
 

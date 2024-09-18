@@ -23,4 +23,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spacer_padding_top" />
 
+    <Space
+        android:id="@+id/spacer_padding_photo"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_photo_layout" />
+
+    <include
+        android:id="@+id/profile_contacts_shiffer_layout"
+        layout="@layout/fragment_profile_contacts_shiffer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spacer_padding_photo" />
+
+    <include
+        android:id="@+id/profile_contacts_layout"
+        layout="@layout/fragment_profile_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spacer_padding_photo" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

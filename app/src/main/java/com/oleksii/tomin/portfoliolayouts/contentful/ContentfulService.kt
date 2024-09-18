@@ -1,22 +1,27 @@
 package com.oleksii.tomin.portfoliolayouts.contentful
 
-import com.contentful.java.cda.CDAAsset
-import com.contentful.java.cda.CDAClient
+import ResumeDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class ContentfulService(
-    private val contentfulClient: CDAClient,
+    private val contentfulMediaService: ContentfulMediaService,
+    private val contentfulApiService: ContentfulApiService,
+    private val accessToken: String,
 ) {
 
     suspend fun fetchProfilePhotoUrl(): String = withContext(Dispatchers.IO) {
-        return@withContext contentfulClient
-            .fetch(CDAAsset::class.java)
-            .one(PROFILE_PHOTO_MEDIA_ID)
-            .url()
+        return@withContext contentfulMediaService.fetchProfilePhotoUrl()
+    }
+
+    suspend fun getContentfulResume(): ResumeDetails = withContext(Dispatchers.IO) {
+        return@withContext contentfulApiService.getResume(
+            RESUME_ENTRY_ID,
+            accessToken
+        ).fields.resume
     }
 
     companion object {
-        const val PROFILE_PHOTO_MEDIA_ID = "6pNXsbMWXKfKrRu1HLJGNn"
+        const val RESUME_ENTRY_ID = "3VIY4mJFJM9Y8yztlDyZAD"
     }
 }
