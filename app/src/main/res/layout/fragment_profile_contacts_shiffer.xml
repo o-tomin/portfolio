@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerInParent="true">
+    android:layout_centerInParent="true"
+    android:paddingHorizontal="@dimen/contacts_horizontal_padding">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
             style="@style/BodyTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
+            android:paddingVertical="@dimen/contacts_vertical_padding"
             android:text="@string/loading"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +25,7 @@
             style="@style/BodyTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
+            android:paddingVertical="@dimen/contacts_vertical_padding"
             android:text="@string/loading"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -34,7 +35,7 @@
             style="@style/BodyTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
+            android:paddingVertical="@dimen/contacts_vertical_padding"
             android:text="@string/loading"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -44,7 +45,7 @@
             style="@style/BodyTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
+            android:paddingVertical="@dimen/contacts_vertical_padding"
             android:text="@string/loading"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/location" />
@@ -54,7 +55,7 @@
             style="@style/BodyTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
+            android:paddingVertical="@dimen/contacts_vertical_padding"
             android:text="@string/loading"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/email" />
@@ -64,7 +65,7 @@
             style="@style/BodyTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
+            android:paddingVertical="@dimen/contacts_vertical_padding"
             android:text="@string/loading"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linkedin" />

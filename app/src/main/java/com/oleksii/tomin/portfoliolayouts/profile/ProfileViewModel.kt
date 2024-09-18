@@ -28,7 +28,7 @@ class ProfileViewModel @Inject constructor(
             }.onSuccess { url ->
 
                 // The delay is used to demonstrate shimmer effect
-                delay(4_500)
+                delay(2_000)
 
                 updateState { copy(profilePhotoUrl = "https:$url") }
             }.onFailure {
@@ -42,7 +42,7 @@ class ProfileViewModel @Inject constructor(
             }.onSuccess { resume ->
 
                 // The delay is used to demonstrate shimmer effect
-                delay(5_000)
+                delay(1_000)
 
                 updateState { copy(contact = resume.contact) }
             }.onFailure {

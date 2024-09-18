@@ -5,4 +5,10 @@
     <string name="experience">Experience</string>
     <string name="education">Education</string>
     <string name="loading">Loading…</string>
+    <string name="name">Name:</string>
+    <string name="title">Title:</string>
+    <string name="location">Location:</string>
+    <string name="email">Email:</string>
+    <string name="linkedin">LinkedIn:</string>
+    <string name="phone">Phone:</string>
 </resources>
