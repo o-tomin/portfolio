@@ -12,6 +12,7 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.text.toSpannable
@@ -190,11 +191,29 @@ class ProfileFragment : MviFragment() {
                 when (event) {
                     ProfileViewModelEvents.ShowRequestToCallMeDialog -> {
                         currentState.contact?.phone?.let { phone ->
-                            showRequestToCallMeDialog {
+                            showRequestToRedirectDialog(
+                                message = R.string.call_alex_message,
+                                positiveButton = R.string.call,
+                                negativeButton = R.string.later,
+                            ) {
                                 startActivity(
                                     Intent(Intent.ACTION_DIAL).apply {
                                         data = Uri.parse("tel:$phone")
                                     }
+                                )
+                            }
+                        }
+                    }
+
+                    ProfileViewModelEvents.ShowMyLinkedIn -> {
+                        currentState.contact?.linkedinViewProfileUrl?.let { linkedInUrl ->
+                            showRequestToRedirectDialog(
+                                message = R.string.open_alex_linked_in_message,
+                                positiveButton = R.string.redirect,
+                                negativeButton = R.string.later,
+                            ) {
+                                startActivity(
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(linkedInUrl))
                                 )
                             }
                         }
@@ -209,6 +228,14 @@ class ProfileFragment : MviFragment() {
                     .onEach {
                         viewModel.highlightPhoneNumber()
                         viewModel.requestToCallMe()
+                    }
+                    .catch { viewModel.reportError(it) }
+                    .launchIn(lifecycleScope)
+
+                linkedin.scopedClickAndDebounce()
+                    .onEach {
+                        viewModel.highlightLinkedInUrl()
+                        viewModel.showMyLinkedIn()
                     }
                     .catch { viewModel.reportError(it) }
                     .launchIn(lifecycleScope)
@@ -232,17 +259,20 @@ class ProfileFragment : MviFragment() {
         }
     }
 
-    private fun showRequestToCallMeDialog(
-        onCall: () -> Unit,
+    private fun showRequestToRedirectDialog(
+        @StringRes message: Int,
+        @StringRes positiveButton: Int,
+        @StringRes negativeButton: Int,
+        onRedirect: () -> Unit,
     ) =
         AlertDialog.Builder(requireContext())
-            .setMessage(R.string.call_alex_message)
-            .setPositiveButton(R.string.call) { _, _ -> onCall() }
-            .setNegativeButton(R.string.later) { _, _ -> }
+            .setMessage(message)
+            .setPositiveButton(positiveButton) { _, _ -> onRedirect() }
+            .setNegativeButton(negativeButton) { _, _ -> }
             .create()
             .apply {
                 setOnDismissListener {
-                    viewModel.stopHighlightingPhoneNumber()
+                    viewModel.stopHighlightContacts()
                 }
             }
             .show()

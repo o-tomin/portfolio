@@ -1,3 +1,5 @@
+import com.google.gson.annotations.SerializedName
+
 data class ResumeResponse(
     val metadata: Metadata,
     val sys: Sys,
@@ -63,6 +65,8 @@ data class Contact(
     val location: String,
     val email: String,
     val linkedin: String,
+    @SerializedName("linkedin-view-profile-url")
+    val linkedinViewProfileUrl: String,
     val phone: String,
     val formattedPhoneContact: String = phone
 )

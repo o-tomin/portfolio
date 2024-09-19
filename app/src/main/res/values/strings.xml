@@ -15,4 +15,7 @@
     <string name="call_alex_message">Call me now?</string>
     <string name="call">Call</string>
     <string name="later">Later</string>
+
+    <string name="open_alex_linked_in_message">Redirect to my LinkedIn?</string>
+    <string name="redirect">Redirect</string>
 </resources>

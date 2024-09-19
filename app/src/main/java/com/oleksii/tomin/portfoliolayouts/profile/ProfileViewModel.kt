@@ -125,26 +125,12 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    fun stopHighlightingPhoneNumber() = updateState {
-        copy(
-            highlightPhoneNumber = false,
-            secretHighlighting = true
-        )
-    }
-
-    fun highlightLinkedInUrlNumber() = updateState {
+    fun highlightLinkedInUrl() = updateState {
         copy(
             highlightLinkedInUrl = true,
             highlightEmail = false,
             highlightPhoneNumber = false,
             secretHighlighting = false
-        )
-    }
-
-    fun stopHighlightLinkedInUrlNumber() = updateState {
-        copy(
-            highlightLinkedInUrl = false,
-            secretHighlighting = true
         )
     }
 
@@ -157,9 +143,11 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    fun stopHighlightEmail() = updateState {
+    fun stopHighlightContacts() = updateState {
         copy(
             highlightEmail = false,
+            highlightPhoneNumber = false,
+            highlightLinkedInUrl = false,
             secretHighlighting = true
         )
     }
@@ -176,6 +164,10 @@ class ProfileViewModel @Inject constructor(
 
         return "$countryCode ($areaCode) $firstPart $secondPart"
     }
+
+    fun showMyLinkedIn() {
+        sendEvent(ProfileViewModelEvents.ShowMyLinkedIn)
+    }
 }
 
 data class ProfileViewModelState(
@@ -191,5 +183,6 @@ data class ProfileViewModelState(
 
 sealed class ProfileViewModelEvents {
     data object ShowRequestToCallMeDialog : ProfileViewModelEvents()
+    data object ShowMyLinkedIn : ProfileViewModelEvents()
     data class Error(val t: Throwable) : ProfileViewModelEvents()
 }
