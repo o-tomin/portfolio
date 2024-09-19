@@ -63,7 +63,8 @@ data class Contact(
     val location: String,
     val email: String,
     val linkedin: String,
-    val phone: String
+    val phone: String,
+    val formattedPhoneContact: String = phone
 )
 
 data class Stack(

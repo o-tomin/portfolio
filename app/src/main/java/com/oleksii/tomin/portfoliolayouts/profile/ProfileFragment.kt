@@ -1,27 +1,43 @@
 package com.oleksii.tomin.portfoliolayouts.profile
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.text.toSpannable
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.oleksii.tomin.portfoliolayouts.R
 import com.oleksii.tomin.portfoliolayouts.databinding.FragmentProfileBinding
+import com.oleksii.tomin.portfoliolayouts.ext.eLog
+import com.oleksii.tomin.portfoliolayouts.ext.scopedClickAndDebounce
 import com.oleksii.tomin.portfoliolayouts.mvi.MviFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class ProfileFragment : MviFragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private val viewModel: ProfileViewModel by viewModels()
+    private val colorSpan by lazy {
+        ForegroundColorSpan(
+            ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+        )
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -76,7 +92,8 @@ class ProfileFragment : MviFragment() {
 
                         email.text = toSpannable(getString(R.string.email), contact.email)
                         linkedin.text = toSpannable(getString(R.string.linkedin), contact.linkedin)
-                        phone.text = toSpannable(getString(R.string.phone), contact.phone)
+                        phone.text =
+                            toSpannable(getString(R.string.phone), contact.formattedPhoneContact)
                     }
                 }?.also {
                     viewModel.stopContactsShimmerEffect()
@@ -93,12 +110,69 @@ class ProfileFragment : MviFragment() {
                     binding.profileContactsShifferLayout.root.stopShimmer()
                 }
             }
+
+            collectStateProperty(ProfileViewModelState::highlightPhoneNumber) { isHighlight ->
+                currentState.contact?.let { contact ->
+                    if (isHighlight) {
+                        val phoneTextSpannable = toSpannable(
+                            getString(R.string.phone),
+                            contact.formattedPhoneContact
+                        )
+
+                        binding.profileContactsLayout.phone.text = phoneTextSpannable.apply {
+                            setSpan(
+                                colorSpan,
+                                phoneTextSpannable.length - contact.formattedPhoneContact.length,
+                                phoneTextSpannable.length,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                        }
+                    } else {
+                        binding.profileContactsLayout.phone.text =
+                            binding.profileContactsLayout.phone.text.toSpannable().apply {
+                                removeSpan(colorSpan)
+                            }
+                    }
+                }
+
+            }
+
+            collectEvents { event ->
+                when (event) {
+                    ProfileViewModelEvents.ShowRequestToCallMeDialog -> {
+                        currentState.contact?.phone?.let { phone ->
+                            showRequestToCallMeDialog {
+                                startActivity(
+                                    Intent(Intent.ACTION_DIAL).apply {
+                                        data = Uri.parse("tel:$phone")
+                                    }
+                                )
+                            }
+                        }
+                    }
+
+                    is ProfileViewModelEvents.Error -> eLog(event.t)
+                }
+            }
+
+            with(binding.profileContactsLayout) {
+                phone.scopedClickAndDebounce()
+                    .onEach {
+                        viewModel.highlightPhoneNumber()
+                        viewModel.requestToCallMe()
+                    }
+                    .catch { viewModel.reportError(it) }
+                    .launchIn(lifecycleScope)
+            }
         }
 
         return binding.root
     }
 
-    private fun toSpannable(bold: String, normal: String): Spannable {
+    private fun toSpannable(
+        bold: String,
+        normal: String,
+    ): Spannable {
         return "$bold $normal".toSpannable().apply {
             setSpan(
                 StyleSpan(Typeface.BOLD),
@@ -108,4 +182,19 @@ class ProfileFragment : MviFragment() {
             )
         }
     }
+
+    private fun showRequestToCallMeDialog(
+        onCall: () -> Unit,
+    ) =
+        AlertDialog.Builder(requireContext())
+            .setMessage(R.string.call_alex_message)
+            .setPositiveButton(R.string.call) { _, _ -> onCall() }
+            .setNegativeButton(R.string.later) { _, _ -> }
+            .create()
+            .apply {
+                setOnDismissListener {
+                    viewModel.stopHighlightingPhoneNumber()
+                }
+            }
+            .show()
 }

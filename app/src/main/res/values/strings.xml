@@ -11,4 +11,8 @@
     <string name="email">Email:</string>
     <string name="linkedin">LinkedIn:</string>
     <string name="phone">Phone:</string>
+
+    <string name="call_alex_message">Call me now?</string>
+    <string name="call">Call</string>
+    <string name="later">Later</string>
 </resources>
