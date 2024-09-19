@@ -50,6 +50,18 @@
         app:layout_constraintTop_toBottomOf="@+id/location"
         tools:text="@string/loading" />
 
+    <ImageButton
+        android:id="@+id/copy_email"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginHorizontal="10dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_copy"
+        app:layout_constraintBottom_toBottomOf="@+id/email"
+        app:layout_constraintStart_toEndOf="@+id/email"
+        app:layout_constraintTop_toTopOf="@+id/email"
+        tools:ignore="ImageContrastCheck" />
+
     <TextView
         android:id="@+id/linkedin"
         style="@style/BodyTextStyle"
@@ -61,6 +73,18 @@
         app:layout_constraintTop_toBottomOf="@+id/email"
         tools:text="@string/loading" />
 
+    <ImageButton
+        android:id="@+id/copy_linkedin"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginHorizontal="10dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_copy"
+        app:layout_constraintBottom_toBottomOf="@+id/linkedin"
+        app:layout_constraintStart_toEndOf="@+id/linkedin"
+        app:layout_constraintTop_toTopOf="@+id/linkedin"
+        tools:ignore="ImageContrastCheck" />
+
     <TextView
         android:id="@+id/phone"
         style="@style/BodyTextStyle"
@@ -71,5 +95,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linkedin"
         tools:text="@string/loading" />
+
+    <ImageButton
+        android:id="@+id/copy_phone"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginHorizontal="10dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_copy"
+        app:layout_constraintBottom_toBottomOf="@+id/phone"
+        app:layout_constraintStart_toEndOf="@+id/phone"
+        app:layout_constraintTop_toTopOf="@+id/phone"
+        tools:ignore="ImageContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,4 +18,5 @@
 
     <string name="open_alex_linked_in_message">Redirect to my LinkedIn?</string>
     <string name="redirect">Redirect</string>
+    <string name="copied">Copied</string>
 </resources>

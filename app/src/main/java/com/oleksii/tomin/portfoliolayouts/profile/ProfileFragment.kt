@@ -21,8 +21,10 @@ import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.oleksii.tomin.portfoliolayouts.R
 import com.oleksii.tomin.portfoliolayouts.databinding.FragmentProfileBinding
+import com.oleksii.tomin.portfoliolayouts.ext.copyTextToClipboard
 import com.oleksii.tomin.portfoliolayouts.ext.eLog
 import com.oleksii.tomin.portfoliolayouts.ext.scopedClickAndDebounce
+import com.oleksii.tomin.portfoliolayouts.ext.toast
 import com.oleksii.tomin.portfoliolayouts.mvi.MviFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
@@ -236,6 +238,36 @@ class ProfileFragment : MviFragment() {
                     .onEach {
                         viewModel.highlightLinkedInUrl()
                         viewModel.showMyLinkedIn()
+                    }
+                    .catch { viewModel.reportError(it) }
+                    .launchIn(lifecycleScope)
+
+                copyEmail.scopedClickAndDebounce()
+                    .onEach {
+                        currentState.contact?.email?.let { email ->
+                            copyTextToClipboard(email)
+                            toast(getString(R.string.copied))
+                        }
+                    }
+                    .catch { viewModel.reportError(it) }
+                    .launchIn(lifecycleScope)
+
+                copyLinkedin.scopedClickAndDebounce()
+                    .onEach {
+                        currentState.contact?.linkedinViewProfileUrl?.let { linkedIn ->
+                            copyTextToClipboard(linkedIn)
+                            toast(getString(R.string.copied))
+                        }
+                    }
+                    .catch { viewModel.reportError(it) }
+                    .launchIn(lifecycleScope)
+
+                copyPhone.scopedClickAndDebounce()
+                    .onEach {
+                        currentState.contact?.phone?.let { phone ->
+                            copyTextToClipboard(phone)
+                            toast(getString(R.string.copied))
+                        }
                     }
                     .catch { viewModel.reportError(it) }
                     .launchIn(lifecycleScope)
