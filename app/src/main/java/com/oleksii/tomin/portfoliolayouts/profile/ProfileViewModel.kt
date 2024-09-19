@@ -6,6 +6,7 @@ import com.oleksii.tomin.portfoliolayouts.contentful.ContentfulService
 import com.oleksii.tomin.portfoliolayouts.mvi.MviViewModel
 import com.oleksii.tomin.portfoliolayouts.mvi.MviViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,32 +21,26 @@ class ProfileViewModel @Inject constructor(
         contact = null,
         showContactsShimmerEffect = true,
         highlightPhoneNumber = false,
-        secretHighlighting = true
+        highlightLinkedInUrl = false,
+        highlightEmail = false,
+        secretHighlighting = true,
     )
 ) {
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             runCatching {
                 contentfulService.fetchProfilePhotoUrl()
             }.onSuccess { url ->
-
-                // The delay is used to demonstrate shimmer effect
-                delay(2_000)
-
                 updateState { copy(profilePhotoUrl = "https:$url") }
             }.onFailure {
                 sendEvent(ProfileViewModelEvents.Error(it))
             }
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             runCatching {
                 contentfulService.getContentfulResume()
             }.onSuccess { resume ->
-
-                // The delay is used to demonstrate shimmer effect
-                delay(1_000)
-
                 updateState {
                     copy(
                         contact = resume.contact.copy(
@@ -58,16 +53,49 @@ class ProfileViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repeat(Int.MAX_VALUE) {
+                delay(5_000)
+
                 if (state.value.secretHighlighting) {
-                    updateState { copy(highlightPhoneNumber = true) }
+                    updateState {
+                        copy(
+                            highlightPhoneNumber = false,
+                            highlightLinkedInUrl = false,
+                            highlightEmail = true,
+                        )
+                    }
                 }
                 delay(500)
                 if (state.value.secretHighlighting) {
-                    updateState { copy(highlightPhoneNumber = false) }
+                    updateState {
+                        copy(
+                            highlightPhoneNumber = false,
+                            highlightLinkedInUrl = true,
+                            highlightEmail = false,
+                        )
+                    }
                 }
-                delay(5_000)
+                delay(500)
+                if (state.value.secretHighlighting) {
+                    updateState {
+                        copy(
+                            highlightPhoneNumber = true,
+                            highlightLinkedInUrl = false,
+                            highlightEmail = false,
+                        )
+                    }
+                }
+                delay(500)
+                if (state.value.secretHighlighting) {
+                    updateState {
+                        copy(
+                            highlightPhoneNumber = false,
+                            highlightLinkedInUrl = false,
+                            highlightEmail = false,
+                        )
+                    }
+                }
             }
         }
     }
@@ -91,6 +119,8 @@ class ProfileViewModel @Inject constructor(
     fun highlightPhoneNumber() = updateState {
         copy(
             highlightPhoneNumber = true,
+            highlightLinkedInUrl = false,
+            highlightEmail = false,
             secretHighlighting = false
         )
     }
@@ -98,6 +128,38 @@ class ProfileViewModel @Inject constructor(
     fun stopHighlightingPhoneNumber() = updateState {
         copy(
             highlightPhoneNumber = false,
+            secretHighlighting = true
+        )
+    }
+
+    fun highlightLinkedInUrlNumber() = updateState {
+        copy(
+            highlightLinkedInUrl = true,
+            highlightEmail = false,
+            highlightPhoneNumber = false,
+            secretHighlighting = false
+        )
+    }
+
+    fun stopHighlightLinkedInUrlNumber() = updateState {
+        copy(
+            highlightLinkedInUrl = false,
+            secretHighlighting = true
+        )
+    }
+
+    fun highlightEmail() = updateState {
+        copy(
+            highlightEmail = true,
+            highlightPhoneNumber = false,
+            highlightLinkedInUrl = false,
+            secretHighlighting = false
+        )
+    }
+
+    fun stopHighlightEmail() = updateState {
+        copy(
+            highlightEmail = false,
             secretHighlighting = true
         )
     }
@@ -122,6 +184,8 @@ data class ProfileViewModelState(
     val contact: Contact?,
     val showContactsShimmerEffect: Boolean,
     val highlightPhoneNumber: Boolean,
+    val highlightLinkedInUrl: Boolean,
+    val highlightEmail: Boolean,
     val secretHighlighting: Boolean
 ) : MviViewState
 

@@ -134,7 +134,56 @@ class ProfileFragment : MviFragment() {
                             }
                     }
                 }
+            }
 
+            collectStateProperty(ProfileViewModelState::highlightLinkedInUrl) { isHighlight ->
+                currentState.contact?.let { contact ->
+                    if (isHighlight) {
+                        val linkedInTextSpannable = toSpannable(
+                            getString(R.string.linkedin),
+                            contact.linkedin
+                        )
+
+                        binding.profileContactsLayout.linkedin.text = linkedInTextSpannable.apply {
+                            setSpan(
+                                colorSpan,
+                                linkedInTextSpannable.length - contact.linkedin.length,
+                                linkedInTextSpannable.length,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                        }
+                    } else {
+                        binding.profileContactsLayout.linkedin.text =
+                            binding.profileContactsLayout.linkedin.text.toSpannable().apply {
+                                removeSpan(colorSpan)
+                            }
+                    }
+                }
+            }
+
+            collectStateProperty(ProfileViewModelState::highlightEmail) { isHighlight ->
+                currentState.contact?.let { contact ->
+                    if (isHighlight) {
+                        val emailTextSpannable = toSpannable(
+                            getString(R.string.email),
+                            contact.email
+                        )
+
+                        binding.profileContactsLayout.email.text = emailTextSpannable.apply {
+                            setSpan(
+                                colorSpan,
+                                emailTextSpannable.length - contact.email.length,
+                                emailTextSpannable.length,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                        }
+                    } else {
+                        binding.profileContactsLayout.email.text =
+                            binding.profileContactsLayout.email.text.toSpannable().apply {
+                                removeSpan(colorSpan)
+                            }
+                    }
+                }
             }
 
             collectEvents { event ->
