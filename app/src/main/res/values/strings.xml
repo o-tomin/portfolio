@@ -19,4 +19,9 @@
     <string name="open_alex_linked_in_message">Redirect to my LinkedIn?</string>
     <string name="redirect">Redirect</string>
     <string name="copied">Copied</string>
+
+    <string name="mailto">mailto:</string>
+    <string name="re_portfolio">Re: Portfolio</string>
+    <string name="send_me_email">Send me email?</string>
+    <string name="send">Send</string>
 </resources>

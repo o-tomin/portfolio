@@ -221,6 +221,27 @@ class ProfileFragment : MviFragment() {
                         }
                     }
 
+                    ProfileViewModelEvents.EmailMe -> {
+                        currentState.contact?.email?.let { email ->
+                            showRequestToRedirectDialog(
+                                message = R.string.send_me_email,
+                                positiveButton = R.string.send,
+                                negativeButton = R.string.later,
+                            ) {
+                                startActivity(
+                                    Intent(Intent.ACTION_SENDTO).apply {
+                                        data = Uri.parse(getString(R.string.mailto))
+                                        putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                                        putExtra(
+                                            Intent.EXTRA_SUBJECT,
+                                            getString(R.string.re_portfolio)
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+
                     is ProfileViewModelEvents.Error -> eLog(event.t)
                 }
             }
@@ -268,6 +289,14 @@ class ProfileFragment : MviFragment() {
                             copyTextToClipboard(phone)
                             toast(getString(R.string.copied))
                         }
+                    }
+                    .catch { viewModel.reportError(it) }
+                    .launchIn(lifecycleScope)
+
+                email.scopedClickAndDebounce()
+                    .onEach {
+                        viewModel.highlightEmail()
+                        viewModel.requestToEmailMe()
                     }
                     .catch { viewModel.reportError(it) }
                     .launchIn(lifecycleScope)

@@ -168,6 +168,10 @@ class ProfileViewModel @Inject constructor(
     fun showMyLinkedIn() {
         sendEvent(ProfileViewModelEvents.ShowMyLinkedIn)
     }
+
+    fun requestToEmailMe() {
+        sendEvent(ProfileViewModelEvents.EmailMe)
+    }
 }
 
 data class ProfileViewModelState(
@@ -184,5 +188,6 @@ data class ProfileViewModelState(
 sealed class ProfileViewModelEvents {
     data object ShowRequestToCallMeDialog : ProfileViewModelEvents()
     data object ShowMyLinkedIn : ProfileViewModelEvents()
+    data object EmailMe : ProfileViewModelEvents()
     data class Error(val t: Throwable) : ProfileViewModelEvents()
 }
