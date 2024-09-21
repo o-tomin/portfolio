@@ -11,6 +11,7 @@
     <string name="email">Email:</string>
     <string name="linkedin">LinkedIn:</string>
     <string name="phone">Phone:</string>
+    <string name="portfolio">Portfolio:</string>
 
     <string name="call_alex_message">Call me now?</string>
     <string name="call">Call</string>
@@ -24,4 +25,6 @@
     <string name="re_portfolio">Re: Portfolio</string>
     <string name="send_me_email">Send me email?</string>
     <string name="send">Send</string>
+
+    <string name="open_alex_app_github">Redirect to Alex app repo?</string>
 </resources>

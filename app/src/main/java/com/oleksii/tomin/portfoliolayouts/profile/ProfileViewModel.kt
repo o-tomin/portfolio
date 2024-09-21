@@ -19,10 +19,12 @@ class ProfileViewModel @Inject constructor(
         profilePhotoUrl = null,
         showProfilePhotoShimmerEffect = true,
         contact = null,
+        appRepo = null,
         showContactsShimmerEffect = true,
         highlightPhoneNumber = false,
         highlightLinkedInUrl = false,
         highlightEmail = false,
+        highlightAppRepoUrl = false,
         secretHighlighting = true,
     )
 ) {
@@ -46,6 +48,7 @@ class ProfileViewModel @Inject constructor(
                         contact = resume.contact.copy(
                             formattedPhoneContact = resume.contact.formatPhone()
                         ),
+                        appRepo = resume.github
                     )
                 }
             }.onFailure {
@@ -121,6 +124,7 @@ class ProfileViewModel @Inject constructor(
             highlightPhoneNumber = true,
             highlightLinkedInUrl = false,
             highlightEmail = false,
+            highlightAppRepoUrl = false,
             secretHighlighting = false
         )
     }
@@ -130,6 +134,7 @@ class ProfileViewModel @Inject constructor(
             highlightLinkedInUrl = true,
             highlightEmail = false,
             highlightPhoneNumber = false,
+            highlightAppRepoUrl = false,
             secretHighlighting = false
         )
     }
@@ -139,6 +144,7 @@ class ProfileViewModel @Inject constructor(
             highlightEmail = true,
             highlightPhoneNumber = false,
             highlightLinkedInUrl = false,
+            highlightAppRepoUrl = false,
             secretHighlighting = false
         )
     }
@@ -148,6 +154,7 @@ class ProfileViewModel @Inject constructor(
             highlightEmail = false,
             highlightPhoneNumber = false,
             highlightLinkedInUrl = false,
+            highlightAppRepoUrl = false,
             secretHighlighting = true
         )
     }
@@ -172,16 +179,32 @@ class ProfileViewModel @Inject constructor(
     fun requestToEmailMe() {
         sendEvent(ProfileViewModelEvents.EmailMe)
     }
+
+    fun highlightPortfolio() = updateState {
+        copy(
+            highlightEmail = true,
+            highlightPhoneNumber = false,
+            highlightLinkedInUrl = false,
+            highlightAppRepoUrl = true,
+            secretHighlighting = false
+        )
+    }
+
+    fun showAppCode() {
+        sendEvent(ProfileViewModelEvents.ShowAppCode)
+    }
 }
 
 data class ProfileViewModelState(
     val profilePhotoUrl: String?,
     val showProfilePhotoShimmerEffect: Boolean,
     val contact: Contact?,
+    val appRepo: String?,
     val showContactsShimmerEffect: Boolean,
     val highlightPhoneNumber: Boolean,
     val highlightLinkedInUrl: Boolean,
     val highlightEmail: Boolean,
+    val highlightAppRepoUrl: Boolean,
     val secretHighlighting: Boolean
 ) : MviViewState
 
@@ -189,5 +212,6 @@ sealed class ProfileViewModelEvents {
     data object ShowRequestToCallMeDialog : ProfileViewModelEvents()
     data object ShowMyLinkedIn : ProfileViewModelEvents()
     data object EmailMe : ProfileViewModelEvents()
+    data object ShowAppCode : ProfileViewModelEvents()
     data class Error(val t: Throwable) : ProfileViewModelEvents()
 }

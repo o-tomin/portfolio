@@ -102,6 +102,12 @@ class ProfileFragment : MviFragment() {
                     viewModel.stopContactsShimmerEffect()
                 }
             }
+            collectStateProperty(ProfileViewModelState::appRepo) { repo ->
+                repo?.let {
+                    binding.profileContactsLayout.portfolio.text =
+                        toSpannable(getString(R.string.portfolio), repo)
+                }
+            }
             collectStateProperty(ProfileViewModelState::showContactsShimmerEffect) { showShimmer ->
                 if (showShimmer) {
                     binding.profileContactsLayout.root.visibility = View.GONE
@@ -164,6 +170,32 @@ class ProfileFragment : MviFragment() {
                 }
             }
 
+            collectStateProperty(ProfileViewModelState::highlightAppRepoUrl) { isHighlight ->
+                currentState.appRepo?.let { appRepo ->
+                    if (isHighlight) {
+                        val portfolioTextSpannable = toSpannable(
+                            getString(R.string.portfolio),
+                            appRepo
+                        )
+
+                        binding.profileContactsLayout.portfolio.text =
+                            portfolioTextSpannable.apply {
+                                setSpan(
+                                    colorSpan,
+                                    portfolioTextSpannable.length - appRepo.length,
+                                    portfolioTextSpannable.length,
+                                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
+                            }
+                    } else {
+                        binding.profileContactsLayout.portfolio.text =
+                            binding.profileContactsLayout.portfolio.text.toSpannable().apply {
+                                removeSpan(colorSpan)
+                            }
+                    }
+                }
+            }
+
             collectStateProperty(ProfileViewModelState::highlightEmail) { isHighlight ->
                 currentState.contact?.let { contact ->
                     if (isHighlight) {
@@ -216,6 +248,20 @@ class ProfileFragment : MviFragment() {
                             ) {
                                 startActivity(
                                     Intent(Intent.ACTION_VIEW, Uri.parse(linkedInUrl))
+                                )
+                            }
+                        }
+                    }
+
+                    ProfileViewModelEvents.ShowAppCode -> {
+                        currentState.appRepo?.let { repoUrl ->
+                            showRequestToRedirectDialog(
+                                message = R.string.open_alex_app_github,
+                                positiveButton = R.string.redirect,
+                                negativeButton = R.string.later,
+                            ) {
+                                startActivity(
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(repoUrl))
                                 )
                             }
                         }
@@ -297,6 +343,24 @@ class ProfileFragment : MviFragment() {
                     .onEach {
                         viewModel.highlightEmail()
                         viewModel.requestToEmailMe()
+                    }
+                    .catch { viewModel.reportError(it) }
+                    .launchIn(lifecycleScope)
+
+                copyPortfolio.scopedClickAndDebounce()
+                    .onEach {
+                        currentState.appRepo?.let { repo ->
+                            copyTextToClipboard(repo)
+                            toast(getString(R.string.copied))
+                        }
+                    }
+                    .catch { viewModel.reportError(it) }
+                    .launchIn(lifecycleScope)
+
+                portfolio.scopedClickAndDebounce()
+                    .onEach {
+                        viewModel.highlightPortfolio()
+                        viewModel.showAppCode()
                     }
                     .catch { viewModel.reportError(it) }
                     .launchIn(lifecycleScope)
