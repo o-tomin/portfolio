@@ -1,6 +1,7 @@
 package com.oleksii.tomin.portfoliolayouts.di
 
-import com.oleksii.tomin.portfoliolayouts.contentful.ContentfulService
+import com.oleksii.tomin.portfoliolayouts.data.repository.ProfilePhotoRepository
+import com.oleksii.tomin.portfoliolayouts.data.repository.ResumeRepository
 import com.oleksii.tomin.portfoliolayouts.main.MainViewModel
 import com.oleksii.tomin.portfoliolayouts.profile.ProfileViewModel
 import dagger.Module
@@ -18,9 +19,11 @@ class ViewModelModule {
 
     @Provides
     fun provideProfileViewModel(
-        contentfulService: ContentfulService,
+        profilePhotoRepository: ProfilePhotoRepository,
+        resumeRepository: ResumeRepository,
     ) =
         ProfileViewModel(
-            contentfulService,
+            profilePhotoRepository = profilePhotoRepository,
+            resumeRepository = resumeRepository
         )
 }

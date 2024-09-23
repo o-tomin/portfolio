@@ -51,9 +51,9 @@ class ProfileFragment : MviFragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         with(viewModel) {
-            collectStateProperty(ProfileViewModelState::profilePhotoUrl) { url ->
-                url?.let {
-                    binding.profilePhotoLayout.profilePhoto.load(url) {
+            collectStateProperty(ProfileViewModelState::profilePhoto) { profilePhoto ->
+                profilePhoto?.let {
+                    binding.profilePhotoLayout.profilePhoto.load(profilePhoto.url) {
                         crossfade(true)
                         listener(
                             onSuccess = { _, _ ->
@@ -79,24 +79,24 @@ class ProfileFragment : MviFragment() {
                     }
                 }
             }
-            collectStateProperty(ProfileViewModelState::contact) { contact ->
-                contact?.let {
+            collectStateProperty(ProfileViewModelState::contacts) { contacts ->
+                contacts?.let {
                     with(binding.profileContactsLayout) {
-                        name.text = toSpannable(getString(R.string.name), contact.name)
-                        title.text = toSpannable(getString(R.string.title), contact.title)
+                        name.text = toSpannable(getString(R.string.name), contacts.name)
+                        title.text = toSpannable(getString(R.string.title), contacts.title)
 
-                        if (contact.location.isNotEmpty()) {
+                        if (contacts.location.isNotEmpty()) {
                             location.text =
-                                toSpannable(getString(R.string.location), contact.location)
+                                toSpannable(getString(R.string.location), contacts.location)
                             location.visibility = View.VISIBLE
                         } else {
                             location.visibility = View.GONE
                         }
 
-                        email.text = toSpannable(getString(R.string.email), contact.email)
-                        linkedin.text = toSpannable(getString(R.string.linkedin), contact.linkedin)
+                        email.text = toSpannable(getString(R.string.email), contacts.email)
+                        linkedin.text = toSpannable(getString(R.string.linkedin), contacts.linkedin)
                         phone.text =
-                            toSpannable(getString(R.string.phone), contact.formattedPhoneContact)
+                            toSpannable(getString(R.string.phone), contacts.formattedPhoneContact)
                     }
                 }?.also {
                     viewModel.stopContactsShimmerEffect()
@@ -121,17 +121,17 @@ class ProfileFragment : MviFragment() {
             }
 
             collectStateProperty(ProfileViewModelState::highlightPhoneNumber) { isHighlight ->
-                currentState.contact?.let { contact ->
+                currentState.contacts?.let { contacts ->
                     if (isHighlight) {
                         val phoneTextSpannable = toSpannable(
                             getString(R.string.phone),
-                            contact.formattedPhoneContact
+                            contacts.formattedPhoneContact
                         )
 
                         binding.profileContactsLayout.phone.text = phoneTextSpannable.apply {
                             setSpan(
                                 colorSpan,
-                                phoneTextSpannable.length - contact.formattedPhoneContact.length,
+                                phoneTextSpannable.length - contacts.formattedPhoneContact.length,
                                 phoneTextSpannable.length,
                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                             )
@@ -146,17 +146,17 @@ class ProfileFragment : MviFragment() {
             }
 
             collectStateProperty(ProfileViewModelState::highlightLinkedInUrl) { isHighlight ->
-                currentState.contact?.let { contact ->
+                currentState.contacts?.let { contacts ->
                     if (isHighlight) {
                         val linkedInTextSpannable = toSpannable(
                             getString(R.string.linkedin),
-                            contact.linkedin
+                            contacts.linkedin
                         )
 
                         binding.profileContactsLayout.linkedin.text = linkedInTextSpannable.apply {
                             setSpan(
                                 colorSpan,
-                                linkedInTextSpannable.length - contact.linkedin.length,
+                                linkedInTextSpannable.length - contacts.linkedin.length,
                                 linkedInTextSpannable.length,
                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                             )
@@ -197,17 +197,17 @@ class ProfileFragment : MviFragment() {
             }
 
             collectStateProperty(ProfileViewModelState::highlightEmail) { isHighlight ->
-                currentState.contact?.let { contact ->
+                currentState.contacts?.let { contacts ->
                     if (isHighlight) {
                         val emailTextSpannable = toSpannable(
                             getString(R.string.email),
-                            contact.email
+                            contacts.email
                         )
 
                         binding.profileContactsLayout.email.text = emailTextSpannable.apply {
                             setSpan(
                                 colorSpan,
-                                emailTextSpannable.length - contact.email.length,
+                                emailTextSpannable.length - contacts.email.length,
                                 emailTextSpannable.length,
                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                             )
@@ -224,7 +224,7 @@ class ProfileFragment : MviFragment() {
             collectEvents { event ->
                 when (event) {
                     ProfileViewModelEvents.ShowRequestToCallMeDialog -> {
-                        currentState.contact?.phone?.let { phone ->
+                        currentState.contacts?.phone?.let { phone ->
                             showRequestToRedirectDialog(
                                 message = R.string.call_alex_message,
                                 positiveButton = R.string.call,
@@ -240,7 +240,7 @@ class ProfileFragment : MviFragment() {
                     }
 
                     ProfileViewModelEvents.ShowMyLinkedIn -> {
-                        currentState.contact?.linkedinViewProfileUrl?.let { linkedInUrl ->
+                        currentState.contacts?.linkedinViewProfileUrl?.let { linkedInUrl ->
                             showRequestToRedirectDialog(
                                 message = R.string.open_alex_linked_in_message,
                                 positiveButton = R.string.redirect,
@@ -268,7 +268,7 @@ class ProfileFragment : MviFragment() {
                     }
 
                     ProfileViewModelEvents.EmailMe -> {
-                        currentState.contact?.email?.let { email ->
+                        currentState.contacts?.email?.let { email ->
                             showRequestToRedirectDialog(
                                 message = R.string.send_me_email,
                                 positiveButton = R.string.send,
@@ -311,7 +311,7 @@ class ProfileFragment : MviFragment() {
 
                 copyEmail.scopedClickAndDebounce()
                     .onEach {
-                        currentState.contact?.email?.let { email ->
+                        currentState.contacts?.email?.let { email ->
                             copyTextToClipboard(email)
                             toast(getString(R.string.copied))
                         }
@@ -321,7 +321,7 @@ class ProfileFragment : MviFragment() {
 
                 copyLinkedin.scopedClickAndDebounce()
                     .onEach {
-                        currentState.contact?.linkedinViewProfileUrl?.let { linkedIn ->
+                        currentState.contacts?.linkedinViewProfileUrl?.let { linkedIn ->
                             copyTextToClipboard(linkedIn)
                             toast(getString(R.string.copied))
                         }
@@ -331,7 +331,7 @@ class ProfileFragment : MviFragment() {
 
                 copyPhone.scopedClickAndDebounce()
                     .onEach {
-                        currentState.contact?.phone?.let { phone ->
+                        currentState.contacts?.phone?.let { phone ->
                             copyTextToClipboard(phone)
                             toast(getString(R.string.copied))
                         }

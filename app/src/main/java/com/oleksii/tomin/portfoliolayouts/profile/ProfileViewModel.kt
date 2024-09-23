@@ -1,8 +1,10 @@
 package com.oleksii.tomin.portfoliolayouts.profile
 
-import Contact
 import androidx.lifecycle.viewModelScope
-import com.oleksii.tomin.portfoliolayouts.contentful.ContentfulService
+import com.oleksii.tomin.portfoliolayouts.data.repository.ProfilePhotoRepository
+import com.oleksii.tomin.portfoliolayouts.data.repository.ResumeRepository
+import com.oleksii.tomin.portfoliolayouts.domain.entity.profile.photo.ProfilePhoto
+import com.oleksii.tomin.portfoliolayouts.domain.entity.resume.Contacts
 import com.oleksii.tomin.portfoliolayouts.mvi.MviViewModel
 import com.oleksii.tomin.portfoliolayouts.mvi.MviViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,12 +15,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    contentfulService: ContentfulService,
+    private val profilePhotoRepository: ProfilePhotoRepository,
+    private val resumeRepository: ResumeRepository,
 ) : MviViewModel<ProfileViewModelState, ProfileViewModelEvents>(
     ProfileViewModelState(
-        profilePhotoUrl = null,
+        profilePhoto = null,
         showProfilePhotoShimmerEffect = true,
-        contact = null,
+        contacts = null,
         appRepo = null,
         showContactsShimmerEffect = true,
         highlightPhoneNumber = false,
@@ -31,9 +34,9 @@ class ProfileViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
-                contentfulService.fetchProfilePhotoUrl()
-            }.onSuccess { url ->
-                updateState { copy(profilePhotoUrl = "https:$url") }
+                profilePhotoRepository.getProfilePhoto()
+            }.onSuccess {
+                updateState { copy(profilePhoto = it) }
             }.onFailure {
                 sendEvent(ProfileViewModelEvents.Error(it))
             }
@@ -41,13 +44,11 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
-                contentfulService.getContentfulResume()
+                resumeRepository.getResume()
             }.onSuccess { resume ->
                 updateState {
                     copy(
-                        contact = resume.contact.copy(
-                            formattedPhoneContact = resume.contact.formatPhone()
-                        ),
+                        contacts = resume.contacts,
                         appRepo = resume.github
                     )
                 }
@@ -159,19 +160,6 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    private fun Contact.formatPhone(): String {
-        if (!phone.startsWith("+") || phone.length != 12) {
-            phone
-        }
-
-        val countryCode = phone.substring(0, 2)
-        val areaCode = phone.substring(2, 5)
-        val firstPart = phone.substring(5, 8)
-        val secondPart = phone.substring(8, 12)
-
-        return "$countryCode ($areaCode) $firstPart $secondPart"
-    }
-
     fun showMyLinkedIn() {
         sendEvent(ProfileViewModelEvents.ShowMyLinkedIn)
     }
@@ -196,9 +184,9 @@ class ProfileViewModel @Inject constructor(
 }
 
 data class ProfileViewModelState(
-    val profilePhotoUrl: String?,
+    val profilePhoto: ProfilePhoto?,
     val showProfilePhotoShimmerEffect: Boolean,
-    val contact: Contact?,
+    val contacts: Contacts?,
     val appRepo: String?,
     val showContactsShimmerEffect: Boolean,
     val highlightPhoneNumber: Boolean,
